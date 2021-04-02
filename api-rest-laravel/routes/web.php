@@ -13,10 +13,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/hola','HolaMundo@decirHola');
 
-Route::get('/saludo', 'ControllerSaludo@decirHola');
+//  Rutas Del API
+
+
+    //Rutas de prueba
+
+    Route::get('posts', 'PostController@prueba');
+    Route::get('categories', 'CategoryController@prueba');
+    Route::get('user', 'UserController@prueba');
+
+
+    // Rutas del User Controller //
+
+    Route::post('register', 'UserController@register');
+    Route::post('login', 'UserController@login');
+
+
+
