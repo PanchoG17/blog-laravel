@@ -56,7 +56,8 @@ class UserController extends Controller
 
                     // Cifrar contraseña
 
-                    $pwd = password_hash($params->password, PASSWORD_BCRYPT, ['cost' => 4]);
+                    $pwd = hash('sha256', $params->password);
+
 
                     // Crear el usuario
 
@@ -67,6 +68,8 @@ class UserController extends Controller
                     $user->email = $params_array['email'];
                     $user->password = $pwd;
                     $user->role = 'ROLE_USER';
+
+
 
                     //Crear el usuario
 
@@ -96,9 +99,9 @@ class UserController extends Controller
 
     public function login(Request $request){
 
-        $jwtAuth = new \JwtAuth();
+        $jwtAuth = new \JWT;
         
-        return $jwtAuth->signup();
+        return response()->json($jwtAuth->signup('admin@admin.com','admin',null));
     }
 
 }
