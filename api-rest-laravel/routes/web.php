@@ -33,6 +33,8 @@ Route::get('/', function () {
 
     Route::post('register', 'UserController@register');
     Route::post('login', 'UserController@login');
+    Route::post('/user/update', 'UserController@update');
+
 
 
 

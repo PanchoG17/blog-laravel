@@ -100,9 +100,68 @@ class UserController extends Controller
     public function login(Request $request){
 
         $jwtAuth = new \JWT;
-        
-        return response()->json($jwtAuth->signup('admin@admin.com','admin',null));
-    }
+
+        //Recibir datos por POST 
+
+        $json = $request->input('json',null);
+        $params = json_decode($json);
+        $params_array = json_decode($json,true);
+
+        //Validar los datos
+
+        $validate = \Validator::make($params_array,[
+            'email'     => 'required|email',
+            'password'  => 'required'
+        ]);
+
+            if ($validate->fails()) {
+
+            //Validacion Error
+
+                $data = array(
+                    'status' => 'error',
+                    'code' => 400,
+                    'message' => 'Ingrese los datos Correctamente',
+                    'errors' => $validate->errors()
+                );
+
+            }else {
+
+            //Validacion OK
+
+                //Cifrar la contraseña
+
+                $pwd = hash('sha256', $params->password);
+
+                //Devolver token o datos
+
+                $signup = $jwtAuth->signup($params->email,$pwd); //Token
+
+                if (isset($params->getToken)) {
+                    $signup = $jwtAuth->signup($params->email,$pwd,true); //Datos
+                }
+            }
+
+        return response()->json($signup,200);
+
+    } //// LOGIN DE USUARIO
+
+    public function update(Request $request){
+
+        $token = $request->header('Authorization'); //Recoger token de la cabecera 
+        $jwtAuth = new \JWT;
+
+        $checkToken = $jwtAuth->checkToken($token);
+
+        if ($checkToken) {
+            echo '<h1>Login correcto</h1>';
+        }else {
+            echo '<h1>Login incorrecto</h1>';
+        }
+
+        die();
+
+    } //// UPDATE DE USUARIO 
 
 }
 
