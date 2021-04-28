@@ -38,6 +38,10 @@ Route::get('/', function () {
     Route::post('login', 'UserController@login');
     Route::put('/user/update', 'UserController@update')->middleware(ApiAuthMiddleware::class);
     Route::post('/user/upload', 'UserController@upload')->middleware(ApiAuthMiddleware::class);
+    Route::get('/user/avatar/{filename}', 'UserController@getImage');
+    Route::get('/user/user/{id}', 'UserController@getUser');
+
+
 
 
 

@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Models\User;
 
 class UserController extends Controller
 {
-
-    public function prueba(Request $request){
-        return "Metodo prueba UserController";
-    } //// TEST
 
     public function register(Request $request){
 
@@ -95,8 +92,7 @@ class UserController extends Controller
 
         return response()->json($data, $data['code']); //Devolver mensajes OK / ERROR en json
 
-    } //// REGISTRO DE USUARIO
-
+    } //// Registro de Usuario
     public function login(Request $request){
 
         $jwtAuth = new \JWT;
@@ -144,7 +140,7 @@ class UserController extends Controller
 
         return response()->json($signup,200);
 
-    } //// LOGIN DE USUARIO
+    } //// Login de Usuario
 
     public function update(Request $request){
 
@@ -209,7 +205,7 @@ class UserController extends Controller
 
         return response()->json($data,$data['code']);
 
-    } //// UPDATE DE USUARIO
+    } //// Update de Usuario
 
     public function upload(Request $request){
 
@@ -217,29 +213,86 @@ class UserController extends Controller
         //recoger datos de la peticion 
         $image = $request->file('file0');
 
-        //guardar imagen
-        if($image){
-            $image_name = time()."-".$image->getClientOriginalName();
-            \Storage::disk('user-img')->put($image_name, \File::get($image));
-        
-        //devolver el resultado
+        //validar imagen
 
-        $data = array(
-            'code' => 200,
-            'status' => 'success',
-            'image' => $image_name
-        );
-        }else {
+        $validate = \Validator::make($request->all(), [
+            'file0' => 'required|image|mimes:jpg,png,jpeg'
+        ]);
+
+
+
+        //guardar imagen
+        if(!$image || $validate->fails()){
+
             $data = array(
                 'code' => 400,
                 'status' => 'Error',
-                'message' => 'Error al subir la imagen'
+                'message' => $validate->errors()
+            );
+
+        }else {
+            $image_name = time()."-".$image->getClientOriginalName();
+            \Storage::disk('user-img')->put($image_name, \File::get($image));
+        
+            //devolver el resultado
+
+            $data = array(
+                'code' => 200,
+                'status' => 'success',
+                'image' => $image_name
             );
         }
 
         return response()->json($data,$data['code']);
 
-    } //// UPLOADER PARA IMGs
+    } //// Uploader de IMGs
+
+    public function getImage($filename){
+
+        $isset = \Storage::disk('user-img')->exists($filename);
+
+        if ($isset) {
+            $file = \Storage::disk('user-img')->get($filename);
+            return new Response($file, 200);
+        }else{
+
+            $data = array(
+                'code' => 400,
+                'status' => 'error',
+                'message' => 'La imagen no existe'
+            );
+
+            return response()->json($data,$data['code']);
+
+        }
+
+
+
+    } //// Obtener Avatar
+
+    public function getUser($id){
+
+        $user = User::find($id);
+
+        if(is_object($user)){
+
+            $data = array(
+                'status' => 'success',
+                'code' => 200,
+                'user' => $user
+            );
+
+        }else{
+            $data = array(
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'El usuario no existe.'
+            );
+        }
+
+        return response()->json($data,$data['code']);
+
+    } //// Obtener Info de Usuario
 
 }
 
