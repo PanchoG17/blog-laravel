@@ -10,7 +10,7 @@ class UserController extends Controller
 
     public function prueba(Request $request){
         return "Metodo prueba UserController";
-    }
+    } //// TEST
 
     public function register(Request $request){
 
@@ -148,20 +148,98 @@ class UserController extends Controller
 
     public function update(Request $request){
 
-        $token = $request->header('Authorization'); //Recoger token de la cabecera 
-        $jwtAuth = new \JWT;
+        //Comprobar si el usuario esta logueado
 
+        $token = $request->header('Authorization'); //Recoger token de la cabecera 
+        $jwtAuth = new \JWT; //Instanciar JWT class
         $checkToken = $jwtAuth->checkToken($token);
 
-        if ($checkToken) {
-            echo '<h1>Login correcto</h1>';
+        // Recoger datos por post
+
+        $json = request()->input('json', null);
+        $params_array = json_decode($json,true);
+
+        if ($checkToken && !empty($params_array)) {
+
+            // Actualizar Usuario.
+
+                $user = $jwtAuth->checkToken($token,true);  //datos del usuario identificado
+
+                // Validar los datos
+
+                $validate = \Validator::make($params_array,[
+
+                    'name'      => 'required|alpha',
+                    'surname'   => 'required|alpha',
+                    'email'     => 'required|email|unique:users'.$user->sub
+
+                ]);
+
+                // Quitar campos que no se actualizan 
+
+                unset($params_array['id']);
+                unset($params_array['role']);
+                unset($params_array['password']);
+                unset($params_array['created_at']);
+                unset($params_array['remember_token']);
+
+                // Actualizar usuario en la DB 
+
+                $user_update = User::where('id', $user->sub)->update($params_array);
+
+
+                // Devolver array con los resultados
+
+                $data = array(
+                    'code' => 200,
+                    'status' => 'success',
+                    'message' => 'El usuario se ha actualizado correctamente',
+                    'user' => $user,
+                    'changes' => $params_array
+                );
+
         }else {
-            echo '<h1>Login incorrecto</h1>';
+
+            $data = array(
+                'code' => 400,
+                'status' => 'error',
+                'message' => 'El usuario no está logueado'
+            );
         }
 
-        die();
+        return response()->json($data,$data['code']);
 
-    } //// UPDATE DE USUARIO 
+    } //// UPDATE DE USUARIO
+
+    public function upload(Request $request){
+
+
+        //recoger datos de la peticion 
+        $image = $request->file('file0');
+
+        //guardar imagen
+        if($image){
+            $image_name = time()."-".$image->getClientOriginalName();
+            \Storage::disk('user-img')->put($image_name, \File::get($image));
+        
+        //devolver el resultado
+
+        $data = array(
+            'code' => 200,
+            'status' => 'success',
+            'image' => $image_name
+        );
+        }else {
+            $data = array(
+                'code' => 400,
+                'status' => 'Error',
+                'message' => 'Error al subir la imagen'
+            );
+        }
+
+        return response()->json($data,$data['code']);
+
+    } //// UPLOADER PARA IMGs
 
 }
 

@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Middleware\ApiAuthMiddleware;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,7 +36,9 @@ Route::get('/', function () {
 
     Route::post('register', 'UserController@register');
     Route::post('login', 'UserController@login');
-    Route::post('/user/update', 'UserController@update');
+    Route::put('/user/update', 'UserController@update')->middleware(ApiAuthMiddleware::class);
+    Route::post('/user/upload', 'UserController@upload')->middleware(ApiAuthMiddleware::class);
+
 
 
 

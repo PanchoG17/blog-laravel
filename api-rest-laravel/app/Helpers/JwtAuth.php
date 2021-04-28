@@ -9,7 +9,6 @@ use App\Models\User;
 class JwtAuth{
 
     public $key;
-
     public function __construct(){
         $this->key = 'clave_secreta_17011996';
     }
@@ -77,7 +76,7 @@ class JwtAuth{
         $auth = false;
 
         try {
-            $jwt = str_replace('""','',$jwt); // Eliminar comillas
+            $jwt = str_replace('"','',$jwt); // Eliminar comillas
             $decoded = JWT::decode($jwt,$this->key,['HS256']);
         } catch (\UnexpectedValueException $e) {
             $auth = false;
