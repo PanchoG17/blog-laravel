@@ -93,6 +93,7 @@ class UserController extends Controller
         return response()->json($data, $data['code']); //Devolver mensajes OK / ERROR en json
 
     } //// Registro de Usuario
+
     public function login(Request $request){
 
         $jwtAuth = new \JWT;

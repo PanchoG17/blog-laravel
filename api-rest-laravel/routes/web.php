@@ -27,9 +27,10 @@ Route::get('/', function () {
 
     //Rutas de prueba
 
-    Route::get('posts', 'PostController@prueba');
-    Route::get('categories', 'CategoryController@prueba');
-    Route::get('user', 'UserController@prueba');
+    // Route::get('posts', 'PostController@prueba');
+    // Route::get('categories', 'CategoryController@prueba');
+    // Route::get('user', 'UserController@prueba');
+
 
 
     // Rutas del User Controller //
@@ -40,6 +41,10 @@ Route::get('/', function () {
     Route::post('/user/upload', 'UserController@upload')->middleware(ApiAuthMiddleware::class);
     Route::get('/user/avatar/{filename}', 'UserController@getImage');
     Route::get('/user/user/{id}', 'UserController@getUser');
+
+    // Rutas del Category Controller //
+
+    Route::resource('/category', 'CategoryController');
 
 
 
