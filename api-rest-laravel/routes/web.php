@@ -42,9 +42,23 @@ Route::get('/', function () {
     Route::get('/user/avatar/{filename}', 'UserController@getImage');
     Route::get('/user/user/{id}', 'UserController@getUser');
 
+
+    
     // Rutas del Category Controller //
 
     Route::resource('/category', 'CategoryController');
+
+    // Rutas del Post Controller // 
+
+    Route::resource('/post', 'PostController');
+    Route::post('/post/upload', 'PostController@upload');
+    Route::get('/post/image/{filename}', 'PostController@getImage');
+    Route::get('/post/user/{id}', 'PostController@getPostByUser');
+    Route::get('/post/category/{id}', 'PostController@getPostByCategory');
+
+
+
+
 
 
 

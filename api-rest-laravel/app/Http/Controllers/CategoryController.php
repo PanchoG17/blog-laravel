@@ -170,20 +170,4 @@ class CategoryController extends Controller
 
     } // Actualizar una Categoria
 
-
-
-
-    /*
-
-    public function create(){
-        return "Hola";
-    }
-
-    public function edit(){
-        return "Hola";
-    }
-
-    */
-
-
 }
