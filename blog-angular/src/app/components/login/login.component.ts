@@ -96,6 +96,8 @@ export class LoginComponent implements OnInit {
 
         //Redireccionar a home
 
+        alert('Loged out')
+
         this._router.navigate(['inicio']);
       }
 

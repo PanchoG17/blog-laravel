@@ -174,11 +174,10 @@ class UserController extends Controller
 
                 // Quitar campos que no se actualizan 
 
-                unset($params_array['id']);
+                unset($params_array['sub']);
                 unset($params_array['role']);
-                unset($params_array['password']);
-                unset($params_array['created_at']);
-                unset($params_array['remember_token']);
+                unset($params_array['exp']);
+                unset($params_array['iat']);
 
                 // Actualizar usuario en la DB 
 

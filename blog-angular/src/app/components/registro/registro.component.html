@@ -1,20 +1,27 @@
-<div class="mx-4 my-3 bg-light">
+<div class="container">
 
-    <div class="container">
+    <div class="pl-2 py-1 my-3 bg-light">
         <h1>{{title}}</h1>
+    </div>
 
-        <div class="alert alert-danger col-md-5 mt-3" *ngIf="status == 'error'">
+    <div class="col-md-5 pl-2 py-1 bg-light">
+
+        <div class="alert alert-danger mt-3" *ngIf="status == 'error'">
             No se ha podido completar el registro.
         </div>
 
-        <div class="alert alert-success col-md-5 mt-3" role="alert" *ngIf="status == 'success'">
+        <div class="alert alert-success mt-3" role="alert" *ngIf="status == 'success'">
             Se ha registrado correctamente, <a [routerLink]="['/login']">Logueate Aquí</a>
         </div>
 
-        <form action="post" class="col-md-5 ml-0 pl-0" #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)">
+        <form action="post" class="ml-0 pl-2 pt-2 " #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)">
+
+            <h5>Registrate para disfrutar del contenido</h5>
+            <hr>
+
             <div class="form-group">
                 <label for="name">Nombre</label>
-                <input type="text" name="name" class="form-control" #name="ngModel" [(ngModel)]="user.name" required pattern="[a-zA-Z]+" >
+                <input type="text" name="name" class="form-control" #name="ngModel" [(ngModel)]="user.name" required pattern="[a-zA-Z ]+" >
                 <small *ngIf="!name.valid && name.touched" class="invalid-feedback d-block">
                     El nombre no es válido.
                 </small>
@@ -22,7 +29,7 @@
 
             <div class="form-group">
                 <label for="surname">Apellido</label>
-                <input type="text" name="surname" class="form-control" #surname="ngModel" [(ngModel)]="user.surname" required pattern="[a-zA-Z]+">
+                <input type="text" name="surname" class="form-control" #surname="ngModel" [(ngModel)]="user.surname" required pattern="[a-zA-Z ]+">
                 <small *ngIf="!surname.valid && surname.touched" class="invalid-feedback d-block">
                     El apellido no es válido.
                 </small>

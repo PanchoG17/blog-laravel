@@ -35,11 +35,14 @@
             {{ identity.name + " " + identity.surname }}
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" [routerLink] = "['/perfil']">Perfil</a>
-            <a class="dropdown-item" [routerLink] = "['/logout/1']">Logout</a>
-            <div class="dropdown-divider"></div>
+
               <a class="dropdown-item" [routerLink] = "['/create-post']">Crear post</a>
               <a class="dropdown-item" [routerLink] = "['/create-category']">Crear categoria</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" [routerLink] = "['/perfil']">Mi Perfil</a>
+              <a class="dropdown-item" [routerLink] = "['/ajustes']">Ajustes</a>
+              <a class="dropdown-item" [routerLink] = "['/logout/1']">Salir</a>
+
           </div>
         </li>
       </ul>

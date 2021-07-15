@@ -13,6 +13,7 @@ export class RegistroComponent implements OnInit {
   public title: string;
   public user: User;
   public status: string | undefined;
+  public mesage;
 
   constructor(
     private _userService: UserService
@@ -31,9 +32,12 @@ export class RegistroComponent implements OnInit {
         
         if (response.status == "success") {
           this.status = response.status;
+          this.mesage = response.mesage;
+
           form.reset();
 
         }else{
+          console.log(response)
           this.status = "error"
         }
 
