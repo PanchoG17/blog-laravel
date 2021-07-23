@@ -39,12 +39,21 @@
 
             <div class="form-group">
                 <label for="description">Descripción</label>
-                <textarea [froalaEditor]="options" name="description" class="form-control" #description="ngModel" [(ngModel)]="user.description"> </textarea>
+                <textarea [froalaEditor]="richEditor" name="description" class="form-control" #description="ngModel" [(ngModel)]="user.description"> </textarea>
             </div>
 
             <div class="form-group">
                 <label for="image">Avatar</label>
-                <input type="file" name="avatar" class="form-control">
+
+                <div *ngIf="identity && identity.image">
+                    <img src="{{url+'user/avatar/'+user.image}}" class="avatar_edit"alt="avatar">
+                </div>
+
+                <angular-file-uploader
+                    [config]="avatarUploader"
+                    (ApiResponse)="avatarUpload($event)"
+                >
+                </angular-file-uploader>
             </div>
 
             <input type="submit" value="Guardar Cambios" class="btn btn-primary mb-3" [disabled]="userEditForm.invalid">
