@@ -22,7 +22,11 @@ export class UserEditComponent implements OnInit {
   public richEditor: Object = {
     placeholderText: '',
     attribution: false,
-    toolbarButtons: ['bold', 'italic', 'underline']
+    charCounterCount: true,
+    toolbarButtons: ['bold', 'italic', 'underline'],
+    toolbarButtonsXS: ['bold', 'italic', 'underline'],
+    toolbarButtonsSM: ['bold', 'italic', 'underline'],
+    toolbarButtonsMD: ['bold', 'italic', 'underline']
   };
 
   public avatarUploader = {
@@ -66,10 +70,12 @@ export class UserEditComponent implements OnInit {
     this._userService.update(this.token , this.user).subscribe(
       response => {
         if (response.status == 'success') {
+
           localStorage.removeItem('identity');
           localStorage.setItem('identity',JSON.stringify(this.identity));
 
           this.status = 'success';
+
         }else{
           this.status = 'error';
         }
@@ -83,6 +89,7 @@ export class UserEditComponent implements OnInit {
   }
 
   avatarUpload(event){
+
     let data = JSON.parse(event.response);
 
     this.user.image = data.image ;
