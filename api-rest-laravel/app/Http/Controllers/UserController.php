@@ -42,7 +42,7 @@ class UserController extends Controller
 
                     $data = array(
                         'status' => 'error',
-                        'code' => 400,
+                        'code' => 200,
                         'message' => 'El usuario no se pudo registrar',
                         'errors' => $validate->errors()
                     );
@@ -98,7 +98,7 @@ class UserController extends Controller
 
         $jwtAuth = new \JWT;
 
-        //Recibir datos por POST 
+        //Recibir datos por POST
 
         $json = $request->input('json',null);
         $params = json_decode($json);
@@ -147,7 +147,7 @@ class UserController extends Controller
 
         //Comprobar si el usuario esta logueado
 
-        $token = $request->header('Authorization'); //Recoger token de la cabecera 
+        $token = $request->header('Authorization'); //Recoger token de la cabecera
         $jwtAuth = new \JWT; //Instanciar JWT class
         $checkToken = $jwtAuth->checkToken($token);
 
@@ -172,14 +172,14 @@ class UserController extends Controller
 
                 ]);
 
-                // Quitar campos que no se actualizan 
+                // Quitar campos que no se actualizan
 
                 unset($params_array['sub']);
                 unset($params_array['role']);
                 unset($params_array['exp']);
                 unset($params_array['iat']);
 
-                // Actualizar usuario en la DB 
+                // Actualizar usuario en la DB
 
                 $user_update = User::where('id', $user->sub)->update($params_array);
 
@@ -210,7 +210,7 @@ class UserController extends Controller
     public function upload(Request $request){
 
 
-        //recoger datos de la peticion 
+        //recoger datos de la peticion
         $image = $request->file('file0');
 
         //validar imagen
@@ -233,7 +233,7 @@ class UserController extends Controller
         }else {
             $image_name = time()."-".$image->getClientOriginalName();
             \Storage::disk('user-img')->put($image_name, \File::get($image));
-        
+
             //devolver el resultado
 
             $data = array(

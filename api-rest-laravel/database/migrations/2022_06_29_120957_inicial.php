@@ -34,6 +34,7 @@ class Inicial extends Migration
 
             $table->string('surname');
             $table->string('role');
+            $table->string('image')->nullable();
             $table->string('description')->nullable();
 
         });
